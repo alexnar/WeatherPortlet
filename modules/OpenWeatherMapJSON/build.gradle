@@ -1,0 +1,8 @@
+dependencies {
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
+	compileOnly group: "org.osgi", name: "osgi.cmpn", version: "6.0.0"
+	compile group: 'com.google.code.gson', name: 'gson', version: '2.8.1'
+	compile project(':modules:WeatherApi')
+	compile project (':modules:DataGetter')
+
+}
