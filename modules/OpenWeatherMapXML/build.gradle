@@ -3,4 +3,6 @@ dependencies {
 	compileOnly group: "org.osgi", name: "osgi.cmpn", version: "6.0.0"
 	compile project(':modules:WeatherApi')
 	compile project (':modules:DataGetter')
+	testCompile group: 'junit', name: 'junit', version: '4.12'
+	testCompile "org.mockito:mockito-core:2.+"
 }

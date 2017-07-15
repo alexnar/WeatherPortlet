@@ -4,5 +4,7 @@ dependencies {
 	compile group: 'com.google.code.gson', name: 'gson', version: '2.8.1'
 	compile project(':modules:WeatherApi')
 	compile project (':modules:DataGetter')
+	testCompile group: 'junit', name: 'junit', version: '4.12'
+	testCompile "org.mockito:mockito-core:2.+"
 
 }

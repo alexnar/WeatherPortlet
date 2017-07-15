@@ -44,6 +44,9 @@ public class DataGetterServiceImpl implements DataGetterService {
 
     @Override
     public StringBuilder getDataFromUrl(String url) throws DataHttpGetException {
+        if (url == null) {
+            return new StringBuilder();
+        }
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(url);
         StringBuilder htmlResponse = new StringBuilder();
