@@ -3,11 +3,13 @@ package edu.weather.portlet.controller.impl;
 import edu.weather.api.dto.Weather;
 import edu.weather.api.service.WeatherApiService;
 import edu.weather.portlet.controller.service.WeatherGetter;
+import edu.weather.portlet.dto.WeatherForecast;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,17 +31,18 @@ public class WeatherGetterImpl implements WeatherGetter {
     private Map<String, WeatherApiService> weatherApiServiceMap;
 
     @Override
-    public Map<String, List<Weather>> getWeatherByCityForecast(String city) {
-        Map<String, List<Weather>> weatherForecast = new HashMap<>();
+    public List<WeatherForecast> getWeatherByCityForecast(String city) {
+        List<WeatherForecast> weatherForecastList = new ArrayList<>();
         for (Map.Entry<String, WeatherApiService> weatherApiServiceEntry : weatherApiServiceMap.entrySet()) {
             String weatherResourceName = weatherApiServiceEntry.getKey();
 
             WeatherApiService weatherApiService = weatherApiServiceEntry.getValue();
             List<Weather> weatherList = weatherApiService.getWeatherForecastByCity(city);
 
-            weatherForecast.put(weatherResourceName, weatherList);
+            WeatherForecast weatherForecast = new WeatherForecast(weatherResourceName, weatherList);
+            weatherForecastList.add(weatherForecast);
         }
-        return weatherForecast;
+        return weatherForecastList;
     }
 
     /**

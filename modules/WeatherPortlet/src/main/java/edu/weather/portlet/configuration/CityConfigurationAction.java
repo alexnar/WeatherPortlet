@@ -33,8 +33,8 @@ public class CityConfigurationAction extends DefaultConfigurationAction {
     public void processAction(PortletConfig portletConfig, ActionRequest actionRequest,
                               ActionResponse actionResponse) throws Exception {
 
-        String cityName = ParamUtil.getString(actionRequest, CityConfiguration.CITY_NAME_FIELD);
-        setPreference(actionRequest, CityConfiguration.CITY_NAME_FIELD, cityName);
+        String cityName = ParamUtil.getString(actionRequest, "cityName");
+        setPreference(actionRequest, "cityName", cityName);
 
         super.processAction(portletConfig, actionRequest, actionResponse);
     }
@@ -43,7 +43,7 @@ public class CityConfigurationAction extends DefaultConfigurationAction {
     public void include(PortletConfig portletConfig, HttpServletRequest httpServletRequest,
                         HttpServletResponse httpServletResponse) throws Exception {
 
-        httpServletRequest.setAttribute(CityConfiguration.class.getName(), cityConfiguration);
+        httpServletRequest.setAttribute("cityName", cityConfiguration.getCityName());
 
         super.include(portletConfig, httpServletRequest, httpServletResponse);
     }

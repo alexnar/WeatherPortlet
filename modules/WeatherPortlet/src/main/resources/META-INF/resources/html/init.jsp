@@ -17,19 +17,4 @@
 <portlet:defineObjects />
 <liferay-theme:defineObjects />
 
-
-
-<%
-    CityConfiguration cityConfiguration =
-     (CityConfiguration) renderRequest.getAttribute(CityConfiguration.class.getName());
-
-
-
-    String cityName = StringPool.BLANK;
-
-    if (Validator.isNotNull(cityConfiguration)) {
-        cityName = portletPreferences.getValue(CityConfiguration.CITY_NAME_FIELD,
-                cityConfiguration.getCityName());
-
-    }
-%>
+<c:set var="cityName" value="${portletPreferences.getValue('cityName', cityName)}"/>

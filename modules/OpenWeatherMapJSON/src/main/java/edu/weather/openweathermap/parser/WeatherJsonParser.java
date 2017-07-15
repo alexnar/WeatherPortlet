@@ -25,7 +25,8 @@ public class WeatherJsonParser {
     private static final String CITY_JSON_KEY = "city";
     private static final String DAY_WEATHER_JSON_KEY = "day";
     private static final String COD_JSON_KEY = "cod";
-    private static final String ERROR_JSON_VALUE = "404";
+    private static final String ERROR_404_JSON_VALUE = "404";
+    private static final String ERROR_400_JSON_VALUE = "400";
 
     /**
      * Return weather now from JSON API.
@@ -122,7 +123,10 @@ public class WeatherJsonParser {
     private static boolean checkJsonError(JsonObject jsonObject) {
 
         String codeValue = jsonObject.get(COD_JSON_KEY).getAsString();
-        boolean isErrorOccurred = codeValue.equals(ERROR_JSON_VALUE);
+        boolean isErrorOccurred = false;
+        if (codeValue.equals(ERROR_404_JSON_VALUE) || codeValue.equals(ERROR_400_JSON_VALUE)) {
+            isErrorOccurred = true;
+        }
         return isErrorOccurred;
     }
 }

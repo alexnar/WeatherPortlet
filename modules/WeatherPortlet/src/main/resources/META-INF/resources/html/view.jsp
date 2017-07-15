@@ -1,49 +1,31 @@
 <%@ include file="init.jsp" %>
 
-<p>
-	<b><liferay-ui:message key="WeatherPortlet.caption"/></b>
-</p>
 
-<%
-    boolean noConfig = Validator.isNull(cityName);
-%>
 
-<portlet:resourceURL id="/weather/json" var="captchaURL">
-    <portlet:param name="cityName" value="<%= cityName %>" />
+<portlet:resourceURL id="/weather/json" var="jsonUrl">
+    <portlet:param name="cityName" value="${cityName}" />
 </portlet:resourceURL>
 
 
-
 <c:choose>
-    <c:when test="<%= noConfig %>">
-        <p>
-            Please  specify city in portlet configurations.
-        </p>
+    <c:when test="${cityName.equals('')}">
+        City name, is not specified.
     </c:when>
-
     <c:otherwise>
-            CityName: <%=cityName %><br>
-            <%
-                WeatherGetter weatherGetter = (WeatherGetter) renderRequest.getAttribute(WeatherGetter.class.getName());
-                Map<String, List<Weather>> weatherForecast = weatherGetter.getWeatherByCityForecast(cityName);
-            %>
-            <% for (Map.Entry<String, List<Weather>> weatherForecastEntry : weatherForecast.entrySet()) { %>
-                <%= weatherForecastEntry.getKey() %>
-                <br>
-                <% List<Weather> weatherList = weatherForecastEntry.getValue(); %>
-                 <% for (int i = 0; i < weatherList.size() ; i++) { %>
-                   Weather in <%= i %> days:
-                   <% Weather weather = weatherList.get(i); %>
-                   Temperature: <%= weather.getTemperature() %>
-                   Weather description: <%= weather.getWeatherDescription() %>
-                   <br>
-                 <% } %>
-               <br>
-            <% } %>
+        <h1>CityName: <i>${cityName}</i></h1><br>
+        <c:forEach items="${weatherForecastList}" var="weatherForecast">
+            <c:set var="resourceName" value="${weatherForecast.getResourceName()}"/>
+            <c:set var="weatherList" value="${weatherForecast.getWeatherList()}"/>
+            <h1>${resourceName}</h1>
+            <c:forEach items="${weatherList}" var="weather">
+               <c:set var="temperature" value="${weather.getTemperature()}"/>
+               <c:set var="weatherDescription" value="${weather.getWeatherDescription()}"/>
+               Temperature: ${temperature} Description: ${weatherDescription} <br>
+            </c:forEach>
+        </c:forEach>
 
-            <a href="<%= captchaURL %>"> Get weather as JSON </a>
 
+        <a href="<%= jsonUrl %>"> Get weather as JSON </a>
     </c:otherwise>
 </c:choose>
-
 

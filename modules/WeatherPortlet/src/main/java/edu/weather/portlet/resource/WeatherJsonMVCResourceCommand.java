@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import edu.weather.api.dto.Weather;
 import edu.weather.portlet.controller.service.WeatherGetter;
+import edu.weather.portlet.dto.WeatherForecast;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -31,9 +32,9 @@ public class WeatherJsonMVCResourceCommand implements MVCResourceCommand {
         try {
             PrintWriter printWriter = resourceResponse.getWriter();
             String cityName = resourceRequest.getParameter("cityName");
-            Map<String, List<Weather>> weatherMap = weatherGetter.getWeatherByCityForecast(cityName);
+            List<WeatherForecast> weatherForecastList = weatherGetter.getWeatherByCityForecast(cityName);
             Gson gson = new Gson();
-            String jsonWeather = gson.toJson(weatherMap);
+            String jsonWeather = gson.toJson(weatherForecastList);
             printWriter.write(jsonWeather);
 
         } catch (IOException e) {
