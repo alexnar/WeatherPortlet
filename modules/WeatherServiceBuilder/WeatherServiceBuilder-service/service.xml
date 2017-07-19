@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+
+<service-builder package-path="edu.weather.servicebuilder">
+	<namespace>Weather</namespace>
+	<!--<entity data-source="sampleDataSource" local-service="true" name="Foo" remote-service="false" session-factory="sampleSessionFactory" table="foo" tx-manager="sampleTransactionManager uuid="true"">-->
+	<entity name="WeatherForecast" local-service="true" remote-service="true" cache-enabled="false">
+		<column name="weatherForecastId" type="long" primary="true" />
+		<column name="cityName" type="String" />
+		<column name="resourceName" type="String" />
+		<column name="forecastDate" type="Date" />
+		<column name="weathers" type="Collection" entity="Weather" mapping-table="Weather_WeatherForecast" />
+	</entity>
+
+	<entity name="Weather" local-service="true" remote-service="true" cache-enabled="false">
+		<column name="weatherId" type="long" primary="true" />
+		<column name="temperature" type="Double" />
+		<column name="description" type="String" />
+		<column name="weatherForecasts" type="Collection" entity="WeatherForecast" mapping-table="Weather_WeatherForecast" />
+	</entity>
+
+
+</service-builder>

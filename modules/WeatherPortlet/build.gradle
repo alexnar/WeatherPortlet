@@ -9,4 +9,6 @@ dependencies {
 	compile 'biz.aQute.bnd:biz.aQute.bndlib:3.3.0'
 	compile 'com.liferay:com.liferay.portal.configuration.metatype:2.0.0'
 	compile project(':modules:WeatherApi')
+	compile project(':modules:Logger')
+	compile project(':modules:WeatherServiceBuilder:WeatherServiceBuilder-api')
 }

@@ -39,7 +39,7 @@ public class WeatherGetterImpl implements WeatherGetter {
             WeatherApiService weatherApiService = weatherApiServiceEntry.getValue();
             List<Weather> weatherList = weatherApiService.getWeatherForecastByCity(city);
 
-            WeatherForecast weatherForecast = new WeatherForecast(weatherResourceName, weatherList);
+            WeatherForecast weatherForecast = new WeatherForecast(weatherResourceName, city, weatherList);
             weatherForecastList.add(weatherForecast);
         }
         return weatherForecastList;

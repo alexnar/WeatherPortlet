@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean class="edu.weather.servicebuilder.service.impl.WeatherLocalServiceImpl" id="edu.weather.servicebuilder.service.WeatherLocalService" />
+	<bean class="edu.weather.servicebuilder.service.impl.WeatherServiceImpl" id="edu.weather.servicebuilder.service.WeatherService" />
+	<bean class="edu.weather.servicebuilder.service.persistence.impl.WeatherPersistenceImpl" id="edu.weather.servicebuilder.service.persistence.WeatherPersistence" parent="basePersistence" />
+	<bean class="edu.weather.servicebuilder.service.impl.WeatherForecastLocalServiceImpl" id="edu.weather.servicebuilder.service.WeatherForecastLocalService" />
+	<bean class="edu.weather.servicebuilder.service.impl.WeatherForecastServiceImpl" id="edu.weather.servicebuilder.service.WeatherForecastService" />
+	<bean class="edu.weather.servicebuilder.service.persistence.impl.WeatherForecastPersistenceImpl" id="edu.weather.servicebuilder.service.persistence.WeatherForecastPersistence" parent="basePersistence" />
+</beans>

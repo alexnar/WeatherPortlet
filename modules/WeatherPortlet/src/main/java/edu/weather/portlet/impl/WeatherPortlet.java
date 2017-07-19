@@ -6,11 +6,12 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import javax.portlet.*;
 
 
-import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
-import edu.weather.api.dto.Weather;
 import edu.weather.portlet.configuration.CityConfiguration;
 import edu.weather.portlet.controller.service.WeatherGetter;
+import edu.weather.portlet.controller.service.WeatherServiceHelper;
 import edu.weather.portlet.dto.WeatherForecast;
+import edu.weather.servicebuilder.service.WeatherForecastLocalServiceUtil;
+import edu.weather.servicebuilder.service.WeatherLocalServiceUtil;
 import org.osgi.service.component.annotations.*;
 
 import java.io.IOException;
@@ -42,11 +43,15 @@ public class WeatherPortlet extends MVCPortlet {
     private static final String CITY_NAME_PREFERENCE_EMPTY = "CITY NAME PREFERENCE IS EMPTY";
 
     @Reference
-    WeatherGetter weatherGetter;
+    private WeatherGetter weatherGetter;
+
+    @Reference
+    private WeatherServiceHelper weatherServiceHelper;
 
     @Override
     public void doView(RenderRequest renderRequest,
                        RenderResponse renderResponse) throws IOException, PortletException {
+
 
 
         String defaultCityName = cityConfiguration.getCityName();
@@ -58,10 +63,14 @@ public class WeatherPortlet extends MVCPortlet {
             cityName = defaultCityName;
         }
 
-        List<WeatherForecast> weatherForecastList = weatherGetter.getWeatherByCityForecast(cityName);
+        /*List<WeatherForecast> weatherForecastList = weatherGetter.getWeatherByCityForecast(cityName);*/
+        List<edu.weather.servicebuilder.model.WeatherForecast> weatherForecastListModel
+                = weatherServiceHelper.processWeatherForecastByCity(cityName);
+        List<WeatherForecast> weatherForecastListDto =
+                weatherServiceHelper.translateWeatherForecastListModelToDto(weatherForecastListModel);
 
         renderRequest.setAttribute("cityName", cityName);
-        renderRequest.setAttribute("weatherForecastList", weatherForecastList);
+        renderRequest.setAttribute("weatherForecastList", weatherForecastListDto);
 
         super.doView(renderRequest, renderResponse);
     }

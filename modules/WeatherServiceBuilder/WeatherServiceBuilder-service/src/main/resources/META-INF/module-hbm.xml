@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false" default-lazy="false">
+	<import class="edu.weather.servicebuilder.model.Weather" />
+	<import class="edu.weather.servicebuilder.model.WeatherForecast" />
+	<class name="edu.weather.servicebuilder.model.impl.WeatherImpl" table="Weather_Weather">
+		<id name="weatherId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="temperature" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="edu.weather.servicebuilder.model.impl.WeatherForecastImpl" table="Weather_WeatherForecast">
+		<id name="weatherForecastId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="cityName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="resourceName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="forecastDate" type="org.hibernate.type.TimestampType" />
+	</class>
+</hibernate-mapping>

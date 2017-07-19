@@ -1,0 +1,9 @@
+Bundle-Name: WeatherServiceBuilder-api
+Bundle-SymbolicName: edu.weather.servicebuilder.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	edu.weather.servicebuilder.exception,\
+	edu.weather.servicebuilder.model,\
+	edu.weather.servicebuilder.service,\
+	edu.weather.servicebuilder.service.persistence
+-includeresource: META-INF/service.xml=../WeatherServiceBuilder-service/service.xml

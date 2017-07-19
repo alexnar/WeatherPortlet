@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="edu.weather.servicebuilder.model.Weather">
+		<field name="weatherId" type="long" />
+		<field name="temperature" type="Double" />
+		<field name="description" type="String" />
+	</model>
+	<model name="edu.weather.servicebuilder.model.WeatherForecast">
+		<field name="weatherForecastId" type="long" />
+		<field name="cityName" type="String" />
+		<field name="resourceName" type="String" />
+		<field name="forecastDate" type="Date" />
+	</model>
+</model-hints>

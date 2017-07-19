@@ -3,6 +3,7 @@ package edu.weather.portlet.resource;
 import com.google.gson.Gson;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import edu.weather.api.dto.Weather;
+import edu.weather.logger.service.WeatherAppLoggerService;
 import edu.weather.portlet.controller.service.WeatherGetter;
 import edu.weather.portlet.dto.WeatherForecast;
 import org.osgi.service.component.annotations.Component;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 @Component(
         property = {
@@ -27,6 +29,11 @@ public class WeatherJsonMVCResourceCommand implements MVCResourceCommand {
     @Reference
     WeatherGetter weatherGetter;
 
+    @Reference
+    WeatherAppLoggerService weatherAppLoggerService;
+
+    private static final String SERVE_RESOURCE_ERROR = "Error while serving resources";
+
     @Override
     public boolean serveResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse) throws PortletException {
         try {
@@ -38,7 +45,7 @@ public class WeatherJsonMVCResourceCommand implements MVCResourceCommand {
             printWriter.write(jsonWeather);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            weatherAppLoggerService.log(Level.WARNING, SERVE_RESOURCE_ERROR, e);
         }
         return false;
     }
