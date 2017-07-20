@@ -6,8 +6,8 @@ import edu.weather.api.dto.Weather;
 import edu.weather.portlet.controller.service.WeatherGetter;
 import edu.weather.portlet.controller.service.WeatherServiceHelper;
 import edu.weather.portlet.dto.WeatherForecast;
-import edu.weather.servicebuilder.service.WeatherForecastLocalServiceUtil;
-import edu.weather.servicebuilder.service.WeatherLocalServiceUtil;
+import edu.weather.servicebuilder.service.WeatherForecastLocalService;
+import edu.weather.servicebuilder.service.WeatherLocalService;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -24,7 +24,13 @@ import java.util.List;
 public class WeatherServiceHelperImpl implements WeatherServiceHelper {
 
     @Reference
-    WeatherGetter weatherGetter;
+    private WeatherGetter weatherGetter;
+
+    @Reference
+    private WeatherForecastLocalService weatherForecastLocalService;
+
+    @Reference
+    private WeatherLocalService weatherLocalService;
 
 
     @Override
@@ -36,7 +42,7 @@ public class WeatherServiceHelperImpl implements WeatherServiceHelper {
 
     @Override
     public List<edu.weather.servicebuilder.model.WeatherForecast> getWeatherForecastListByCity(String cityName) {
-        DynamicQuery dynamicQuery = WeatherForecastLocalServiceUtil.dynamicQuery();
+        DynamicQuery dynamicQuery = weatherForecastLocalService.dynamicQuery();
 
 
         Criterion criterionCity = RestrictionsFactoryUtil.eq("cityName", cityName);
@@ -44,7 +50,7 @@ public class WeatherServiceHelperImpl implements WeatherServiceHelper {
         dynamicQuery.add(criterionCity);
 
         List<edu.weather.servicebuilder.model.WeatherForecast> weatherForecasts =
-                WeatherForecastLocalServiceUtil.dynamicQuery(dynamicQuery);
+                weatherForecastLocalService.dynamicQuery(dynamicQuery);
 
         Calendar nowCalendar = Calendar.getInstance();
         Calendar forecastCalendar = Calendar.getInstance();
@@ -85,7 +91,7 @@ public class WeatherServiceHelperImpl implements WeatherServiceHelper {
             String cityName = weatherForecastModel.getCityName();
             String resourceName = weatherForecastModel.getResourceName();
             List<edu.weather.servicebuilder.model.Weather> weatherListModel
-                    = WeatherLocalServiceUtil.getWeatherForecastWeathers(weatherForecastId);
+                    = weatherLocalService.getWeatherForecastWeathers(weatherForecastId);
             List<Weather> weatherListDto = new ArrayList<>();
             for (edu.weather.servicebuilder.model.Weather weatherModel : weatherListModel) {
                 Weather weatherDto = translateWeatherModelToDto(weatherModel);
@@ -117,14 +123,14 @@ public class WeatherServiceHelperImpl implements WeatherServiceHelper {
             return;
         }
 
-        WeatherForecastLocalServiceUtil.addWeatherForecast(weatherForecastModel);
+        weatherForecastLocalService.addWeatherForecast(weatherForecastModel);
 
         List<Weather> weatherDtoList = weatherForecastDto.getWeatherList();
         for (Weather weatherDto : weatherDtoList) {
             edu.weather.servicebuilder.model.Weather weatherModel = translateWeatherDtoToModel(weatherDto);
-            WeatherLocalServiceUtil.addWeather(weatherModel);
+            weatherLocalService.addWeather(weatherModel);
             long weatherForecastModelId = weatherForecastModel.getWeatherForecastId();
-            WeatherLocalServiceUtil.addWeatherForecastWeather(weatherForecastModelId, weatherModel);
+            weatherLocalService.addWeatherForecastWeather(weatherForecastModelId, weatherModel);
         }
     }
 
@@ -137,7 +143,7 @@ public class WeatherServiceHelperImpl implements WeatherServiceHelper {
 
         long id = CounterLocalServiceUtil.increment();
         edu.weather.servicebuilder.model.WeatherForecast weatherForecastModel
-                = WeatherForecastLocalServiceUtil.createWeatherForecast(id);
+                = weatherForecastLocalService.createWeatherForecast(id);
 
         weatherForecastModel.setResourceName(weatherForecastDto.getResourceName());
         weatherForecastModel.setCityName(weatherForecastDto.getCityName());
@@ -151,7 +157,7 @@ public class WeatherServiceHelperImpl implements WeatherServiceHelper {
      */
     private edu.weather.servicebuilder.model.Weather translateWeatherDtoToModel(Weather weatherDto) {
         long id = CounterLocalServiceUtil.increment();
-        edu.weather.servicebuilder.model.Weather weatherModel = WeatherLocalServiceUtil.createWeather(id);
+        edu.weather.servicebuilder.model.Weather weatherModel = weatherLocalService.createWeather(id);
 
         String weatherDescription = weatherDto.getWeatherDescription();
         double temperature = weatherDto.getTemperature();
@@ -182,7 +188,7 @@ public class WeatherServiceHelperImpl implements WeatherServiceHelper {
      */
     private boolean checkIfForecastExists(edu.weather.servicebuilder.model.WeatherForecast weatherForecast) {
 
-        DynamicQuery dynamicQuery = WeatherForecastLocalServiceUtil.dynamicQuery();
+        DynamicQuery dynamicQuery = weatherForecastLocalService.dynamicQuery();
 
         String resourceName = weatherForecast.getResourceName();
         String cityName = weatherForecast.getCityName();
@@ -194,7 +200,7 @@ public class WeatherServiceHelperImpl implements WeatherServiceHelper {
         dynamicQuery.add(criterionResult);
 
         List<edu.weather.servicebuilder.model.WeatherForecast> weatherForecasts =
-                WeatherForecastLocalServiceUtil.dynamicQuery(dynamicQuery);
+                weatherForecastLocalService.dynamicQuery(dynamicQuery);
 
         Calendar nowCalendar = Calendar.getInstance();
         Calendar forecastCalendar = Calendar.getInstance();
