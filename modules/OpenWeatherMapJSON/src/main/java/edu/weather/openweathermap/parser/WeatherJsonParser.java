@@ -35,6 +35,9 @@ public class WeatherJsonParser {
      * @return - List of Weather DTO
      */
     public static Weather getWeatherNowFromJson(StringBuilder weatherJson) {
+        if (weatherJson.length() == 0) {
+            return new Weather.WeatherBuilder().build();
+        }
         String jsonString = weatherJson.toString();
         JsonParser jsonParser = new JsonParser();
         JsonElement jsonElement = jsonParser.parse(jsonString);
@@ -68,6 +71,9 @@ public class WeatherJsonParser {
      * @return - List of Weather DTO
      */
     public static List<Weather> getWeatherForecastFromJson(StringBuilder weatherJson) {
+        if (weatherJson.length() == 0) {
+            return new ArrayList<>();
+        }
         String jsonString = weatherJson.toString();
         JsonParser jsonParser = new JsonParser();
         JsonElement jsonElement = jsonParser.parse(jsonString);

@@ -119,7 +119,11 @@ public class WeatherServiceHelperImpl implements WeatherServiceHelper {
         edu.weather.servicebuilder.model.WeatherForecast weatherForecastModel =
                 translateWeatherForecastDtoToModel(weatherForecastDto);
 
-        if (checkIfForecastExists(weatherForecastModel)) {
+        List<Weather> weatherForecastListDto = weatherForecastDto.getWeatherList();
+        boolean isWeatherForecastListEmpty = weatherForecastListDto.isEmpty();
+        boolean isForecastExists = checkIfForecastExists(weatherForecastModel);
+
+        if (isForecastExists || isWeatherForecastListEmpty) {
             return;
         }
 
